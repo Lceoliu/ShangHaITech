@@ -1,50 +1,45 @@
-# Developer Guide
+# 开发指南
 
-This guide explains how community contributors should work with the public
-subset of Better ShanghaiTech.
+这份文档说明社区贡献者如何在 Better ShanghaiTech 的公开子集上开发。公开仓库只包含适合协作和审查的部分，不包含完整生产实现。
 
-## Local Setup
+## 本地环境
 
-Install Flutter and verify it first:
+先安装 Flutter 并检查环境：
 
 ```bash
 flutter doctor
 ```
 
-Then fetch packages:
+然后安装移动端依赖：
 
 ```bash
 cd mobile
 flutter pub get
 ```
 
-The public repository is a contribution subset. Some production routes and
-backend-backed features are intentionally absent. Public Flutter code should be
-treated as reference architecture for shared UI, theme, API envelope handling,
-and feature proposal work.
+公开 Flutter 代码主要用于共享 UI、主题、API envelope、错误处理和扩展机制的协作。部分页面、路由、仓库层和后端能力会被有意省略。
 
-## API Configuration
+## API 配置
 
-The public app should not hard-code the production API. Use a build-time value:
+公开代码不应写死生产 API。需要本地运行时，请使用构建参数：
 
 ```bash
 flutter run --dart-define=API_BASE_URL=http://127.0.0.1:18000/api/v1
 ```
 
-For production release builds, maintainers set the real API URL in the private
-release pipeline.
+正式构建由维护者在私有发布流程中注入真实 API 地址。
 
-## Frontend Architecture
+## 前端结构
 
-The public Flutter subset keeps these layers:
+公开 Flutter 子集保留这些层：
 
 ```text
-mobile/lib/core/          API envelope, config, theme, secure storage patterns
-mobile/lib/shared/        reusable widgets, models, utility helpers
-mobile/lib/features/      safe feature examples and public-facing patterns
+mobile/lib/core/          API envelope、配置、主题、安全存储模式
+mobile/lib/shared/        可复用组件、模型和工具函数
+mobile/lib/features/      安全的 feature 示例和公共交互模式
 ```
 
-Recommended feature shape:
+推荐 feature 结构：
 
 ```text
 features/your_feature/
@@ -53,36 +48,33 @@ features/your_feature/
   your_feature_models.dart
 ```
 
-Keep page code focused on UI state. Put network parsing and caching in the
-repository layer. Use shared widgets for loading, error, search, and navigation
-patterns.
+页面代码应专注 UI 状态；网络解析、缓存和错误分类放到 repository 层；加载、错误、搜索和导航尽量复用 shared 组件。
 
-## Loading And Refresh Behavior
+## 加载与刷新
 
-User-facing features should:
+用户可见功能应做到：
 
-- render cached or placeholder content quickly
-- use local loading indicators instead of blocking full pages
-- keep previous content visible during background refresh
-- show concise toasts for optimistic updates
-- classify errors as auth, network, server, validation, or unavailable
+- 快速渲染缓存或占位内容
+- 使用局部 loading，不要轻易整页阻塞
+- 后台刷新时保留旧内容
+- 乐观更新后用简洁 toast 反馈
+- 将错误明确分为鉴权、网络、服务端、参数校验或暂不可用
 
-Avoid full-page reloads when switching tabs.
+切换底部 tab 时不要整页重刷。
 
-## Theme Requirements
+## 主题要求
 
-All UI changes must support both light and dark themes. Avoid hard-coded text
-colors. Prefer:
+所有 UI 改动都必须同时支持浅色和深色模式。避免硬编码文字颜色，优先使用：
 
 ```dart
 final cs = Theme.of(context).colorScheme;
 ```
 
-Use shared widgets and theme tokens before introducing new visual primitives.
+新增视觉元素前，先检查已有 shared widget 和 theme token。
 
-## Extension Development
+## 扩展开发
 
-Community extensions start with a manifest:
+社区扩展从 manifest 开始：
 
 ```json
 {
@@ -103,24 +95,19 @@ Community extensions start with a manifest:
 }
 ```
 
-Production maintainers decide when an extension can be enabled and whether it
-requires private backend support.
+维护者会决定一个扩展是否可以启用，以及是否需要私有后端支持。
 
-## Backend Boundary
+## 后端边界
 
-The public repository includes only selected non-sensitive service examples.
-Production routers, admin APIs, billing, AI routing, mail processing, and
-automation services are private.
+公开仓库只包含经过筛选的非敏感服务示例。生产路由、管理 API、内部额度与资源调度、AI 路由、邮件处理、敏感校园数据链路和自动化服务均不在公开范围内。
 
-If a contribution needs backend changes, document the proposed data shape in an
-issue instead of adding private API assumptions to public code.
+如果贡献需要后端能力，请在 issue 中描述你需要的数据形状和用户场景，不要在公开代码中假设私有 API。
 
-## Checklist Before PR
+## PR 前检查
 
-- `flutter analyze` for touched Flutter code when possible
-- no secrets, tokens, logs, private endpoints, or database snapshots
-- no private API documentation
-- screenshots for UI changes
-- dark-mode behavior checked
-- privacy impact explained if user data is involved
-
+- 对修改过的 Flutter 代码尽量运行 `flutter analyze`
+- 不包含密钥、token、日志、私有 endpoint 或数据库快照
+- 不包含生产 API 文档
+- UI 改动附截图或录屏
+- 已检查深色模式
+- 涉及用户数据时说明隐私影响和授权方式

@@ -1,11 +1,10 @@
-# Release Guide
+# 发布说明
 
-Releases are managed by maintainers. Community contributors do not publish
-production builds.
+Release 由维护者负责。社区贡献者不直接发布正式安装包。
 
-## Versioning
+## 版本号
 
-Recommended tag format:
+建议 tag 格式：
 
 ```text
 mobile-vYYYY.MM.DD.N
@@ -13,16 +12,16 @@ api-vYYYY.MM.DD.N
 prod-vYYYY.MM.DD.N
 ```
 
-Examples:
+示例：
 
 ```text
 mobile-v2026.04.20.1
 prod-v2026.04.20.1
 ```
 
-## Android APK Release
+## Android APK
 
-Maintainers build release APKs from the private production repository:
+维护者会从私有生产仓库构建正式 APK：
 
 ```bash
 cd mobile
@@ -31,30 +30,28 @@ flutter pub get
 flutter build apk --release --dart-define=API_BASE_URL=<production-api-base-url>
 ```
 
-The generated artifact is usually:
+常见产物路径：
 
 ```text
 mobile/build/app/outputs/flutter-apk/app-release.apk
 ```
 
-Before uploading to GitHub Releases:
+上传到 GitHub Releases 前，应至少确认：
 
-- verify the API base URL
-- verify app icon and version code
-- smoke-test login/session, home, course, mail, and profile flows
-- confirm no dev endpoint is compiled into the APK
-- write release notes with known issues
+- API base URL 指向正确环境
+- app icon、version name 和 version code 正确
+- 登录、首页、课程、邮件、个人页等核心路径通过 smoke test
+- APK 中没有编译进开发环境 endpoint
+- release notes 写清楚已知问题、兼容性和回滚建议
 
-## Manual GitHub Release Upload
+## 手动上传 GitHub Release
 
-1. Create or select the release tag.
-2. Upload the APK artifact manually.
-3. Add checksums when possible.
-4. Include compatibility notes and rollback guidance.
-5. Keep older stable APKs available unless there is a security reason to remove
-   them.
+1. 创建或选择 release tag。
+2. 手动上传 APK。
+3. 条件允许时附 checksum。
+4. 写清兼容性、已知问题和回滚说明。
+5. 除非存在安全原因，不要移除旧稳定 APK。
 
-## Public Source vs Release Artifacts
+## 公开源码与安装包
 
-The public repository is a community source subset. APK releases may include
-private production code and are uploaded manually by maintainers.
+公开仓库是社区协作子集。正式 APK 可能来自私有生产仓库，并经过额外配置、签名和测试流程。公开源码贡献被合并后，也不代表会立刻进入正式发布版本。

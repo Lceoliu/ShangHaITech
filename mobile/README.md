@@ -1,17 +1,15 @@
-# Public Mobile Subset
+# 移动端公开子集
 
-This directory contains a safe subset of the production Flutter codebase.
+这个目录包含从生产 Flutter 工程中筛选出的安全子集。
 
-It is intended for:
+它主要用于：
 
-- shared UI component review
-- theme and dark-mode improvements
-- API client pattern review
-- community feature proposals
-- extension integration discussion
+- 共享 UI 组件 review
+- 主题和深色模式改进
+- API client 模式 review
+- 社区功能提案
+- 扩展接入讨论
 
-It is not the full production app. Some routes, pages, repositories, and
-backend-backed features are intentionally omitted.
+它不是完整生产 App。部分路由、页面、repository 和后端驱动功能会被有意省略。
 
-Use `docs/DEV_GUIDE.md` for contribution workflow.
-
+贡献流程请阅读 [开发指南](../docs/DEV_GUIDE.md)。

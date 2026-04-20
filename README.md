@@ -1,79 +1,86 @@
-# Better ShanghaiTech Community
+# Better ShanghaiTech
 
-This repository is the public community contribution surface for the Better
-ShanghaiTech app.
+Better ShanghaiTech 是一个面向上海科技大学校园生活的半开源公益项目。我们希望用更清晰、更顺手的移动端体验，帮助同学处理课程、通知、常用信息和校园工具。
 
-The production app is commercial software. This public repository intentionally
-contains only the parts that are useful for community contributions:
+这个仓库是项目的公开社区协作区，不是完整生产仓库。为了保护用户隐私、校园系统安全和长期稳定运行，部分后端、管理端、生产部署、敏感自动化能力、内部数据处理逻辑和接口文档不会公开。
 
-- Flutter mobile architecture examples
-- shared UI widgets and theme conventions
-- API client and error-handling patterns
-- extension manifest examples
-- selected non-sensitive service code used to load community extensions
-- contribution, review, and release documentation
+English version: [README.en.md](README.en.md)
 
-It does not contain the private backend, admin console, production API
-documentation, production deployment configuration, commercial billing logic,
-automation features, sensitive crawlers, private prompts, secrets, logs, or user
-data.
+## 可以在这里做什么
 
-## What You Can Contribute
+欢迎贡献这些内容：
 
-Good public contributions include:
+- Flutter 端公共架构和共享组件优化
+- 深色模式、无障碍、移动端布局和交互细节改进
+- 公共 feature proposal 和原型代码
+- 社区扩展 manifest 与说明文档
+- 公开工具代码的测试和质量改进
+- 文档、中文/英文文案和本地化优化
 
-- UI polish for shared widgets
-- new community feature proposals
-- extension manifests and extension documentation
-- accessibility and dark-mode improvements
-- tests for public utility code
-- documentation improvements
-- localization and copy improvements
+请不要提交会绕过校园系统限制、保存真实用户凭据、抓取受保护数据、依赖未公开生产接口、增加高风险自动化能力，或包含日志、数据库、密钥和用户数据的内容。
 
-Do not submit code that automates restricted campus systems, stores private
-credentials, bypasses rate limits, scrapes protected data, or depends on
-undocumented production APIs.
-
-## Repository Shape
+## 仓库结构
 
 ```text
-mobile/                  Public Flutter architecture subset
-api/app/services/        Selected non-sensitive service examples
-api/app/schemas/         Schemas needed by the public service examples
-extensions/              Community extension manifests
-docs/                    Community development and release guides
+mobile/                  公开的 Flutter 架构子集
+api/app/services/        经过筛选的非敏感服务示例
+api/app/schemas/         公开服务示例需要的 schema
+extensions/              社区扩展示例与 manifest
+docs/                    开发、贡献和发布说明
 ```
 
-The public subset is not guaranteed to be a full replacement for the production
-app. Treat it as the contribution contract and reference implementation for
-features that may later be reviewed and integrated into the private production
-repository.
+公开仓库不是生产 App 的完整替代品。它更像是一个社区协作合同：公开适合共同建设的部分，同时把涉及隐私、安全、稳定性和校园合规的能力保留在私有仓库中维护。
 
-## Start Here
+## 快速开始
 
-Read these documents first:
+建议先阅读：
 
-- [Developer Guide](docs/DEV_GUIDE.md)
-- [Contribution Guide](CONTRIBUTING.md)
-- [Release Guide](docs/RELEASE_GUIDE.md)
-- [Extension Contract](docs/extensions.md)
+- [开发指南](docs/DEV_GUIDE.md)
+- [贡献指南](CONTRIBUTING.md)
+- [发布说明](docs/RELEASE_GUIDE.md)
+- [扩展约定](docs/extensions.md)
 
-## API Boundary
+Flutter 本地检查：
 
-The production API contract is private. Public contributions should avoid
-hard-coding production endpoints beyond generic client patterns. If a feature
-needs backend support, open an issue describing:
+```bash
+cd mobile
+flutter pub get
+flutter analyze
+```
 
-- the user problem
-- the desired frontend behavior
-- the minimum data shape required
-- failure states and privacy considerations
+公开仓库默认不包含生产 API 地址。需要本地运行时，请使用构建参数指定自己的测试服务：
 
-Maintainers will decide whether a private API change is appropriate.
+```bash
+flutter run --dart-define=API_BASE_URL=http://127.0.0.1:18000/api/v1
+```
 
-## Releases
+## API 边界
 
-Installable APKs are distributed manually through GitHub Releases. Source code
-and release artifacts are versioned separately; a public source contribution
-does not automatically imply a production app release.
+生产 API 文档和完整接口实现不在公开范围内。公开贡献不应该硬编码生产接口，也不应该根据线上行为反推私有接口。
 
+如果一个功能需要后端支持，请先开 issue 说明：
+
+- 要解决的用户问题
+- 期望的前端行为
+- 最小必要数据结构
+- 失败状态和隐私影响
+- 是否需要用户授权或明确提示
+
+维护者会评估是否需要在私有仓库中补充后端能力。
+
+## 半开源原则
+
+这个项目的公开目标是让社区能安全地参与体验改进和公共能力建设，而不是公开所有生产实现。我们会优先公开对社区协作有价值、风险可控、不会暴露用户数据或校园系统细节的部分。
+
+不公开的内容通常包括：
+
+- 管理后台和生产运维配置
+- 完整后端路由和生产 API 文档
+- 私有模型路由、提示词和数据处理逻辑
+- 邮件、课程、通知等敏感数据链路的内部实现
+- 重要爬取、自动化和风控相关代码
+- 密钥、日志、数据库快照、用户会话和真实用户数据
+
+## Release
+
+可安装 APK 会由维护者手动上传到 GitHub Releases。公开源码和正式安装包并不完全等价：Release 可能来自私有生产仓库，并经过额外测试、签名和配置检查。

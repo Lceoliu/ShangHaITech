@@ -1,32 +1,29 @@
-# Security Policy
+# 安全政策
 
-Do not report sensitive vulnerabilities in public issues.
+请不要在公开 issue 中披露敏感漏洞。
 
-Email or privately contact the maintainers for issues involving:
+如果问题涉及以下内容，请私下联系维护者：
 
-- account takeover
-- credential exposure
-- production API behavior
-- private backend endpoints
-- payment or credit logic
-- user data leakage
-- bypasses of campus system restrictions
+- 账号接管
+- 凭据泄露
+- 生产 API 行为
+- 私有后端 endpoint
+- 内部额度、资源调度或风控逻辑
+- 用户数据泄露
+- 绕过校园系统限制
 
-## Do Not Commit
+## 请勿提交
 
-- `.env` files
-- API keys
-- JWT secrets
-- Cloudflare credentials
-- database snapshots
-- logs containing user data
-- session files
-- private API documentation
-- production deployment configuration
+- `.env` 文件
+- API key
+- JWT secret
+- Cloudflare 凭据
+- 数据库快照
+- 包含用户数据的日志
+- 会话文件
+- 私有 API 文档
+- 生产部署配置
 
-## Supported Scope
+## 支持范围
 
-The public repository supports community-facing code and docs. The private
-production repository may contain additional security fixes that are not mirrored
-publicly.
-
+公开仓库支持社区可见代码和文档。私有生产仓库可能包含不会同步公开的安全修复、生产配置和敏感实现。

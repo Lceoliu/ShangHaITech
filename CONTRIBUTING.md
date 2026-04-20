@@ -1,62 +1,59 @@
-# Contributing
+# 贡献指南
 
-Thanks for contributing to Better ShanghaiTech.
+感谢你参与 Better ShanghaiTech。
 
-This public repository is designed for community-facing work. Production-only
-systems remain private for security, privacy, and business reasons.
+这个公开仓库用于承载适合社区协作的部分。涉及用户隐私、校园系统安全、生产稳定性和内部风控的系统会继续保留在私有仓库中。
 
-## Contribution Flow
+## 贡献流程
 
-1. Open an issue for non-trivial work before sending a large PR.
-2. Keep the change scoped to public code and public docs.
-3. Run formatting and tests for the files you touch.
-4. Explain user impact, screenshots for UI changes, and any privacy risks.
-5. Wait for maintainer review. Accepted public changes may be mirrored into the
-   private production repository.
+1. 较大的改动请先开 issue 讨论，不要直接提交大 PR。
+2. 改动范围应限制在公开代码和公开文档内。
+3. 对你修改过的文件运行格式化和必要测试。
+4. UI 改动请附截图或录屏，并说明用户影响。
+5. 如果涉及用户数据，请明确说明隐私影响和授权方式。
+6. 等待维护者 review。被接受的公开贡献可能会由维护者同步到私有生产仓库。
 
-## Pull Request Requirements
+## PR 要求
 
-Each PR should include:
+每个 PR 应包含：
 
-- a clear summary
-- test notes or a reason tests were not run
-- screenshots or screen recordings for UI changes
-- migration notes if the public contract changes
-- confirmation that no secrets, private endpoints, logs, or user data are added
+- 清晰的改动摘要
+- 测试说明，或未运行测试的原因
+- UI 改动对应的截图或录屏
+- 如果公开接口或扩展约定变化，请说明迁移影响
+- 确认没有加入密钥、私有接口、日志、数据库或真实用户数据
 
-## Boundaries
+## 边界
 
-Do not contribute:
+请不要提交：
 
-- admin console code
-- production API docs
-- private deployment configuration
-- commercial billing or credit logic
-- private prompts or model routing logic
-- automation for restricted systems
-- code that stores real user credentials
-- crawlers for protected or high-risk data sources
-- logs, database snapshots, session files, or tokens
+- 管理后台代码
+- 生产 API 文档
+- 私有部署配置
+- 内部额度、风控或资源调度逻辑
+- 私有提示词或模型路由逻辑
+- 面向受限系统的自动化代码
+- 存储真实用户凭据的代码
+- 针对受保护或高风险数据源的爬虫
+- 日志、数据库快照、会话文件或 token
 
-## Coding Style
+## 代码风格
 
-For Flutter code:
+Flutter 代码：
 
-- follow the existing theme and shared widget patterns
-- support light and dark themes
-- keep touch targets comfortable on mobile
-- avoid page-level network calls that block the first frame
-- prefer small reusable widgets over one-off visual forks
+- 遵循现有主题和共享组件模式
+- 同时支持浅色和深色主题
+- 保证移动端触控区域舒适
+- 避免首帧被整页网络请求阻塞
+- 优先抽取小型可复用组件，不要随意复制分叉页面样式
 
-For extension manifests:
+扩展 manifest：
 
-- use stable keys
-- document required user permissions
-- describe failure states
-- keep the extension disabled by default until reviewed
+- 使用稳定 key
+- 说明需要的用户授权
+- 描述失败状态
+- review 前默认保持禁用
 
-## Security Reports
+## 安全问题
 
-Do not open public issues for vulnerabilities that expose user data, credentials,
-or production behavior. Follow [SECURITY.md](SECURITY.md).
-
+如果问题可能暴露用户数据、凭据、生产行为或校园系统细节，请不要开公开 issue。请按照 [SECURITY.md](SECURITY.md) 私下联系维护者。
