@@ -1,0 +1,16 @@
+{
+  "key": "hello-world",
+  "name": "Hello World",
+  "description": "Example extension manifest for future community-contributed features.",
+  "version": "0.1.0",
+  "enabled": false,
+  "required_role": "user",
+  "web": {
+    "entry_path": "/extensions/hello-world"
+  },
+  "api": {
+    "base_path": "/api/v1/extensions/hello-world"
+  },
+  "jobs": ["hello.run"],
+  "owner": "community"
+}

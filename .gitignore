@@ -1,0 +1,17 @@
+.dart_tool/
+.idea/
+.vscode/
+build/
+coverage/
+node_modules/
+.env
+.env.*
+*.secret
+*.session.json
+*.db
+*.sqlite
+*.sqlite3
+*.log
+*.pem
+__pycache__/
+*.pyc
