@@ -1,39 +1,61 @@
-# Better ShanghaiTech
+# ShangHaITech: All In One App
 
-Better ShanghaiTech is a semi-open public-interest project for ShanghaiTech campus life. The goal is to provide a clearer and more useful mobile experience for courses, notices, common information, and campus tools.
-
-This repository is the public community collaboration surface. It is not the full production repository. To protect user privacy, campus system safety, and long-term reliability, some backend code, admin tooling, production deployment, sensitive automation, internal data-processing logic, and API documentation remain private.
+ShangHaITech is an all-in-one campus life app for ShanghaiTech University. It brings courses, deadlines, mail, announcements, Blackboard, AI tools, and common campus utilities into a faster mobile-first experience, so students spend less time switching systems and more time acting on what matters.
 
 中文版本: [README.md](README.md)
 
-## What You Can Do Here
+## Why This Matters
 
-Good public contributions include:
+Campus information is often fragmented across course platforms, mailbox threads, Blackboard pages, deadlines, file downloads, evaluations, and temporary notices. ShangHaITech aims to turn that fragmented workflow into a trustworthy, extensible, student-centered campus assistant.
 
-- Flutter public architecture and shared widget improvements
-- dark-mode, accessibility, mobile layout, and interaction polish
-- public feature proposals and prototypes
-- community extension manifests and documentation
-- tests and quality improvements for public utility code
-- documentation, Chinese/English copy, and localization improvements
+The project focuses on three outcomes:
 
-Do not submit code that bypasses campus system restrictions, stores real user credentials, scrapes protected data, depends on private production APIs, adds high-risk automation, or includes logs, databases, secrets, or user data.
+- Find information faster: bring courses, deadlines, mail, and frequent actions into one entry point.
+- Miss fewer important items: use red dots, reminders, action lists, announcements, and update prompts to surface what needs attention.
+- Feel native on mobile: redesign workflows for phone screens instead of wrapping scattered websites.
 
-## Repository Shape
+## App Features
 
-```text
-mobile/                  Public Flutter architecture subset
-api/app/services/        Selected non-sensitive service examples
-api/app/schemas/         Schemas used by the public service examples
-extensions/              Community extension examples and manifests
-docs/                    Development, contribution, and release guides
-```
+Planned and actively improved capabilities include:
 
-The public repository is not a complete replacement for the production app. Treat it as a community collaboration contract: the parts that are useful and safe for shared work are public, while privacy-sensitive, safety-sensitive, and campus-compliance-sensitive capabilities are maintained privately.
+- Home dashboard: courses, plans, announcements, messages, and high-frequency actions in one place.
+- Course helper: semester courses, course detail pages, exam schedules, reviews, and related course information.
+- Deadline center: aggregated deadlines from course work, Gradescope, Blackboard, and other sources.
+- Smart mail: campus mailbox sync, summaries, relevance ranking, and actionable items.
+- Blackboard tools: mobile-friendly access to course content, notices, files, and tasks.
+- Smart Q / GenAI: campus-aware question answering, summarization, and assisted workflows.
+- File transfer: lower-friction file movement between phone and desktop.
+- One-tap evaluation: simplify repetitive campus form workflows.
+- Message center: system messages, announcements, and future push reminders.
+- Account and settings: account binding, mailbox binding, privacy documents, and theme preferences.
+
+## Current Progress
+
+The project is already running online and will continue to evolve with stability as the first priority.
+
+Near-term plan:
+
+- Android releases: distribute APKs through GitHub Releases with in-app update prompts.
+- Push reminders: gradually connect FCM for important announcements, deadlines, and actionable items.
+- Mail experience: improve first sync, summary reliability, action-item ranking, and cross-device state consistency.
+- Course experience: improve reviews, exam schedules, detail pages, and semester switching.
+- Dark mode: keep auditing text, tags, buttons, and cards for readability.
+- Performance: reduce blocking requests, keep cached content visible, and refresh quietly in the background.
+- Community extensions: keep a clean path for lightweight tools and campus utilities.
+
+Longer-term direction:
+
+- A more complete campus search and knowledge entry point.
+- More reliable cross-device sync.
+- Finer-grained reminders and subscriptions.
+- Plugin-style capabilities for clubs, courses, and campus services.
+- Clearer privacy explanations and user data controls.
 
 ## Start Here
 
-Read these documents first:
+If you only want to install the app, watch GitHub Releases. Maintainers will upload official APKs and include version changes, compatibility notes, and known issues in release notes.
+
+If you want to contribute or propose features, read:
 
 - [Developer Guide](docs/DEV_GUIDE.md)
 - [Contribution Guide](CONTRIBUTING.md)
@@ -48,39 +70,32 @@ flutter pub get
 flutter analyze
 ```
 
-The public repository does not include the production API URL by default. For local runs, provide your own test service:
+The public test API is not announced yet. Developers may use their own test service:
 
 ```bash
-flutter run --dart-define=API_BASE_URL=http://127.0.0.1:18000/api/v1
+flutter run --dart-define=API_BASE_URL=http://TO_BE_RELEASED/api/v1
 ```
 
-## API Boundary
+## QA
 
-Production API documentation and full backend implementation are outside the public scope. Public contributions should not hard-code production endpoints or infer private contracts from online behavior.
+**Q: What is ShangHaITech?**
+A: A campus life app for ShanghaiTech students, focused on courses, deadlines, mail, announcements, AI tools, and common campus services.
 
-If a feature needs backend support, open an issue describing:
+**Q: Can I install it now?**
+A: APKs will be published through GitHub Releases. Available features depend on the specific release notes.
 
-- the user problem
-- the expected frontend behavior
-- the minimum required data shape
-- failure states and privacy impact
-- whether user authorization or explicit notice is required
+**Q: Why does this app exist?**
+A: Campus information is split across many systems, and mobile workflows are often inconsistent. ShangHaITech organizes high-frequency information and action items into a better mobile entry point.
 
-Maintainers will decide whether private backend support is appropriate.
+**Q: Will it support update prompts?**
+A: Yes. Future APKs will be distributed through GitHub Releases, and the app can show recommended or required update prompts based on version policy.
 
-## Semi-Open Principle
+**Q: Can I propose features?**
+A: Yes. Open an issue with the user scenario, expected behavior, required data, failure states, and privacy impact.
 
-The goal of this public repository is to let the community safely participate in experience improvements and public capability building. It is not intended to expose every production implementation detail.
-
-Private areas usually include:
-
-- admin tooling and production operations configuration
-- full backend routes and production API documentation
-- private model routing, prompts, and data-processing logic
-- internal implementations for sensitive mail, course, notice, and user-data flows
-- important crawling, automation, and risk-control code
-- secrets, logs, database snapshots, sessions, and real user data
+**Q: What contributions are useful?**
+A: Mobile UI, dark mode, accessibility, copywriting, localization, lightweight tools, extension manifests, tests, and documentation are all useful.
 
 ## Releases
 
-Installable APKs are manually uploaded by maintainers to GitHub Releases. Public source code and release artifacts are not identical: release builds may come from the private production repository and go through additional testing, signing, and configuration checks.
+Installable APKs are available through GitHub Releases. Official releases prioritize stable login, home, course, mail, message, and profile/settings flows.
