@@ -79,6 +79,7 @@ class ApiClient {
   Map<String, dynamic>? _sessionCachePayload;
   DateTime? _sessionCacheExpiresAt;
   Future<Map<String, dynamic>>? _sessionRequestFuture;
+  final Map<String, Future<Map<String, dynamic>>> _jsonGetRequestFutures = {};
 
   Uri _uri(String path, [Map<String, String>? query]) {
     final normalized = path.startsWith("/") ? path : "/$path";
@@ -124,7 +125,7 @@ class ApiClient {
     if (refreshToken == null || refreshToken.isEmpty) {
       throw ApiException("登录已失效", statusCode: 401);
     }
-    final response = await http.post(
+    final response = await _httpClient.post(
       _uri("/auth/refresh"),
       headers: {
         "Content-Type": "application/json",
@@ -187,6 +188,43 @@ class ApiClient {
     _sessionCacheExpiresAt = DateTime.now().add(_sessionCacheTtl);
   }
 
+  void seedSessionCache(Map<String, dynamic> sessionData) {
+    _writeSessionCache({
+      "ok": true,
+      "message": "ok",
+      "data": sessionData,
+    });
+  }
+
+  bool _canMergeJsonRequest({
+    required String method,
+    required Map<String, dynamic>? body,
+  }) {
+    return method.toUpperCase() == "GET" && body == null;
+  }
+
+  String _jsonRequestMergeKey({
+    required String path,
+    required String method,
+    required Map<String, String>? query,
+    required bool auth,
+    required AuthPolicy? authPolicy,
+  }) {
+    final sortedQuery = <String, String>{
+      for (final entry
+          in ((query ?? const <String, String>{}).entries.toList()
+            ..sort((left, right) => left.key.compareTo(right.key))))
+        entry.key: entry.value,
+    };
+    return jsonEncode({
+      "method": method.toUpperCase(),
+      "path": path,
+      "query": sortedQuery,
+      "auth": auth,
+      "auth_policy": authPolicy?.name,
+    });
+  }
+
   Future<http.StreamedResponse> _send(
     String path, {
     String method = "GET",
@@ -208,7 +246,8 @@ class ApiClient {
     final httpRequest = http.Request(method, uri)
       ..headers.addAll(await _headers(authPolicy: resolvedAuthPolicy))
       ..body = body == null ? "" : jsonEncode(body);
-    final streamed = await _httpClient.send(httpRequest).timeout(_requestTimeout);
+    final streamed =
+        await _httpClient.send(httpRequest).timeout(_requestTimeout);
 
     if (streamed.statusCode == 401 &&
         resolvedAuthPolicy != AuthPolicy.none &&
@@ -254,6 +293,22 @@ class ApiClient {
         return pending;
       }
     }
+    final mergeKey =
+        !sessionRequest && _canMergeJsonRequest(method: method, body: body)
+            ? _jsonRequestMergeKey(
+                path: path,
+                method: method,
+                query: query,
+                auth: auth,
+                authPolicy: authPolicy,
+              )
+            : null;
+    if (mergeKey != null) {
+      final pending = _jsonGetRequestFutures[mergeKey];
+      if (pending != null) {
+        return pending;
+      }
+    }
 
     Future<Map<String, dynamic>> perform() async {
       final streamed = await _send(
@@ -268,9 +323,24 @@ class ApiClient {
       final raw =
           await streamed.stream.bytesToString().timeout(_requestTimeout);
       final statusCode = streamed.statusCode;
-      final payload = raw.isEmpty
-          ? <String, dynamic>{}
-          : await compute(_parseJson, raw) as Map<String, dynamic>;
+      Map<String, dynamic> payload;
+      try {
+        payload = raw.isEmpty
+            ? <String, dynamic>{}
+            : await compute(_parseJson, raw) as Map<String, dynamic>;
+      } on FormatException catch (error) {
+        final preview = raw.replaceAll(RegExp(r'\s+'), ' ').trim();
+        throw ApiException(
+          statusCode >= 500 ? '服务器返回异常内容' : '无法解析服务器响应',
+          statusCode: statusCode,
+          code: 'invalid_json_response',
+          detail: {
+            'error': error.message,
+            'preview':
+                preview.length > 180 ? preview.substring(0, 180) : preview,
+          },
+        );
+      }
 
       if (statusCode < 200 || statusCode >= 300 || payload["ok"] == false) {
         final error = payload["error"] as Map<String, dynamic>?;
@@ -290,7 +360,18 @@ class ApiClient {
     }
 
     if (!sessionRequest) {
-      return perform();
+      if (mergeKey == null) {
+        return perform();
+      }
+      final future = perform();
+      _jsonGetRequestFutures[mergeKey] = future;
+      try {
+        return await future;
+      } finally {
+        if (identical(_jsonGetRequestFutures[mergeKey], future)) {
+          _jsonGetRequestFutures.remove(mergeKey);
+        }
+      }
     }
 
     final future = perform();

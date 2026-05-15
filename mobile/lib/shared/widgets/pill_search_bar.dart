@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theming/context_extensions.dart';
 
 class PillSearchBar extends StatelessWidget {
   const PillSearchBar({
@@ -24,7 +25,7 @@ class PillSearchBar extends StatelessWidget {
         hintText: hintText,
         prefixIcon: Icon(prefixIcon),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(999),
+          borderRadius: BorderRadius.circular(context.tokens.radii.pill),
           borderSide: BorderSide.none,
         ),
         filled: true,

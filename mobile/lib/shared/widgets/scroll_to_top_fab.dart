@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theming/context_extensions.dart';
 
 /// A floating action button that fades + scales into view once the user
 /// scrolls past [threshold] pixels, and smoothly scrolls back to the top
@@ -16,10 +17,12 @@ class ScrollToTopFab extends StatefulWidget {
     super.key,
     required this.controller,
     this.threshold = 500.0,
+    this.heroTag = 'scroll_to_top_fab',
   });
 
   final ScrollController controller;
   final double threshold;
+  final Object heroTag;
 
   @override
   State<ScrollToTopFab> createState() => _ScrollToTopFabState();
@@ -88,13 +91,13 @@ class _ScrollToTopFabState extends State<ScrollToTopFab>
           child: Transform.scale(
             scale: _scale.value,
             child: FloatingActionButton.small(
-              heroTag: 'scroll_to_top_fab',
+              heroTag: widget.heroTag,
               onPressed: _scrollToTop,
               backgroundColor: cs.surface,
               foregroundColor: cs.primary,
               elevation: 3,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(context.tokens.radii.sm),
               ),
               child: const Icon(Icons.keyboard_arrow_up_rounded, size: 24),
             ),

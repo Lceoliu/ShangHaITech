@@ -3,7 +3,7 @@ import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart';
 
-import '../../core/theme.dart';
+import '../../theming/context_extensions.dart';
 
 // ── easeOutExpo curve ─────────────────────────────────────────────────────────
 class _EaseOutExpo extends Curve {
@@ -94,7 +94,7 @@ class _MainNavBarState extends State<MainNavBar>
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
         decoration: BoxDecoration(
           color: colorScheme.surface.withValues(alpha: 0.94),
-          borderRadius: BorderRadius.circular(9999),
+          borderRadius: BorderRadius.circular(context.tokens.radii.pill),
           boxShadow: [
             BoxShadow(
               color: colorScheme.shadow.withValues(alpha: 0.10),
@@ -103,7 +103,7 @@ class _MainNavBarState extends State<MainNavBar>
               spreadRadius: -2,
             ),
             BoxShadow(
-              color: context.adaptiveShadow,
+              color: context.tokens.shadows.subtle.first.color,
               blurRadius: 14,
               offset: Offset(0, 3),
             ),
@@ -154,7 +154,7 @@ class _MainNavBarState extends State<MainNavBar>
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                           ),
-                          borderRadius: BorderRadius.circular(9999),
+                          borderRadius: BorderRadius.circular(context.tokens.radii.pill),
                           boxShadow: [
                             BoxShadow(
                               color: colorScheme.primary.withValues(

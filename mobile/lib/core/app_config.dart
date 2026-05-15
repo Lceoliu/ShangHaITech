@@ -3,6 +3,10 @@ class AppConfig {
   static const _legacyApiBaseUrl =
       String.fromEnvironment("BETTER_SKD_API_BASE_URL");
   static const _productionApiBaseUrl = "https://example.invalid/api/v1";
+  static const appVersionName =
+      String.fromEnvironment("APP_VERSION_NAME", defaultValue: "0.1.0");
+  static const appBuildNumber =
+      int.fromEnvironment("APP_BUILD_NUMBER", defaultValue: 1);
 
   static String get apiBaseUrl {
     if (_preferredApiBaseUrl.isNotEmpty) {
@@ -13,4 +17,6 @@ class AppConfig {
     }
     return _productionApiBaseUrl;
   }
+
+  static String get appVersionLabel => "$appVersionName+$appBuildNumber";
 }

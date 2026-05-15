@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import '../../theming/context_extensions.dart';
 
 enum PageStatusTone { neutral, info, success, warning, error }
 
@@ -62,7 +63,7 @@ class PageStatusBanner extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
       decoration: BoxDecoration(
         color: palette.background,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(context.tokens.radii.sm),
       ),
       child: Row(
         children: [
@@ -135,7 +136,7 @@ class FloatingPageStatusNotice extends StatelessWidget {
               child: DecoratedBox(
                 decoration: BoxDecoration(
                   color: palette.background,
-                  borderRadius: BorderRadius.circular(18),
+                  borderRadius: BorderRadius.circular(context.tokens.radii.sm),
                   boxShadow: [
                     BoxShadow(
                       color: cs.shadow.withValues(alpha: 0.12),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../theming/context_extensions.dart';
 
 class ErrorStateCard extends StatelessWidget {
   const ErrorStateCard({
@@ -22,9 +23,9 @@ class ErrorStateCard extends StatelessWidget {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxWidth: 520),
         child: Card(
-          margin: const EdgeInsets.all(20),
+          margin: EdgeInsets.all(context.tokens.spacing.lg),
           child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: EdgeInsets.all(context.tokens.spacing.md),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,

@@ -452,6 +452,235 @@ class CourseCatalogMeta {
       };
 }
 
+class EcourseClassmate {
+  const EcourseClassmate({
+    required this.ecourseUserId,
+    required this.personType,
+    required this.name,
+    required this.userNo,
+    required this.email,
+    required this.nickname,
+    required this.gradeName,
+    required this.klassName,
+    required this.klassCode,
+    required this.departmentName,
+    required this.departmentCode,
+    required this.orgName,
+    required this.programName,
+    required this.roles,
+    required this.aliases,
+    required this.retakeStatus,
+    required this.seatNumber,
+    required this.importedFrom,
+    required this.linkedPlatformUserId,
+    required this.linkedDirectoryResourceId,
+    required this.directoryProfile,
+  });
+
+  final String ecourseUserId;
+  final String personType;
+  final String name;
+  final String? userNo;
+  final String? email;
+  final String? nickname;
+  final String? gradeName;
+  final String? klassName;
+  final String? klassCode;
+  final String? departmentName;
+  final String? departmentCode;
+  final String? orgName;
+  final String? programName;
+  final List<String> roles;
+  final List<String> aliases;
+  final String? retakeStatus;
+  final String? seatNumber;
+  final String? importedFrom;
+  final String? linkedPlatformUserId;
+  final String? linkedDirectoryResourceId;
+  final Map<String, dynamic>? directoryProfile;
+
+  factory EcourseClassmate.fromJson(Map<String, dynamic> json) =>
+      EcourseClassmate(
+        ecourseUserId: json["ecourse_user_id"] as String? ?? "",
+        personType: json["person_type"] as String? ?? "unknown",
+        name: json["name"] as String? ?? "Unknown",
+        userNo: json["user_no"] as String?,
+        email: json["email"] as String?,
+        nickname: json["nickname"] as String?,
+        gradeName: json["grade_name"] as String?,
+        klassName: json["klass_name"] as String?,
+        klassCode: json["klass_code"] as String?,
+        departmentName: json["department_name"] as String?,
+        departmentCode: json["department_code"] as String?,
+        orgName: json["org_name"] as String?,
+        programName: json["program_name"] as String?,
+        roles: ((json["roles"] as List?) ?? const [])
+            .map((item) => item.toString())
+            .where((item) => item.isNotEmpty)
+            .toList(),
+        aliases: ((json["aliases"] as List?) ?? const [])
+            .map((item) => item.toString())
+            .where((item) => item.isNotEmpty)
+            .toList(),
+        retakeStatus: json["retake_status"] as String?,
+        seatNumber: json["seat_number"] as String?,
+        importedFrom: json["imported_from"] as String?,
+        linkedPlatformUserId: json["linked_platform_user_id"] as String?,
+        linkedDirectoryResourceId:
+            json["linked_directory_resource_id"] as String?,
+        directoryProfile: json["directory_profile"] is Map<String, dynamic>
+            ? json["directory_profile"] as Map<String, dynamic>
+            : null,
+      );
+
+  bool get linkedToCampusData =>
+      linkedPlatformUserId != null || linkedDirectoryResourceId != null;
+
+  bool get isInstructor =>
+      personType == "instructor" ||
+      roles.any((role) {
+        final value = role.toLowerCase();
+        return value.contains("instructor") || value.contains("teacher");
+      });
+
+  bool get isStudent => personType == "student";
+}
+
+class EcourseMyCourse {
+  const EcourseMyCourse({
+    required this.ecourseCourseId,
+    required this.courseCode,
+    required this.courseName,
+    required this.displayName,
+    required this.departmentName,
+    required this.gradeName,
+    required this.klassName,
+    required this.courseType,
+    required this.academicYearId,
+    required this.semesterId,
+    required this.credit,
+    required this.compulsory,
+    required this.isStarted,
+    required this.isClosed,
+    required this.instructors,
+    required this.lastSeenAt,
+  });
+
+  final String ecourseCourseId;
+  final String? courseCode;
+  final String courseName;
+  final String? displayName;
+  final String? departmentName;
+  final String? gradeName;
+  final String? klassName;
+  final String? courseType;
+  final String? academicYearId;
+  final String semesterId;
+  final String? credit;
+  final bool? compulsory;
+  final bool? isStarted;
+  final bool? isClosed;
+  final List<String> instructors;
+  final DateTime? lastSeenAt;
+
+  factory EcourseMyCourse.fromJson(Map<String, dynamic> json) =>
+      EcourseMyCourse(
+        ecourseCourseId: json["ecourse_course_id"] as String? ?? "",
+        courseCode: json["course_code"] as String?,
+        courseName: json["course_name"] as String? ?? "Unknown Course",
+        displayName: json["display_name"] as String?,
+        departmentName: json["department_name"] as String?,
+        gradeName: json["grade_name"] as String?,
+        klassName: json["klass_name"] as String?,
+        courseType: json["course_type"] as String?,
+        academicYearId: json["academic_year_id"] as String?,
+        semesterId: json["semester_id"] as String? ?? "",
+        credit: json["credit"]?.toString(),
+        compulsory: json["compulsory"] as bool?,
+        isStarted: json["is_started"] as bool?,
+        isClosed: json["is_closed"] as bool?,
+        instructors: ((json["instructors"] as List?) ?? const [])
+            .whereType<Map<String, dynamic>>()
+            .map((item) => item["name"]?.toString() ?? "")
+            .where((item) => item.isNotEmpty)
+            .toList(),
+        lastSeenAt: DateTime.tryParse(json["last_seen_at"] as String? ?? ""),
+      );
+
+  String get displayTitle =>
+      (displayName == null || displayName!.trim().isEmpty)
+          ? courseName
+          : displayName!.trim();
+
+  String get codeLabel => (courseCode == null || courseCode!.trim().isEmpty)
+      ? ecourseCourseId
+      : courseCode!.trim();
+}
+
+class EcourseCourseRoster {
+  const EcourseCourseRoster({
+    required this.rosterId,
+    required this.ecourseCourseId,
+    required this.courseCode,
+    required this.courseName,
+    required this.displayName,
+    required this.semesterId,
+    required this.academicYearId,
+    required this.departmentName,
+    required this.gradeName,
+    required this.klassName,
+    required this.instructorNames,
+    required this.memberCount,
+    required this.sourceStatus,
+    required this.fetchedAt,
+    required this.cacheHit,
+    required this.students,
+  });
+
+  final String rosterId;
+  final String ecourseCourseId;
+  final String? courseCode;
+  final String courseName;
+  final String? displayName;
+  final String semesterId;
+  final String? academicYearId;
+  final String? departmentName;
+  final String? gradeName;
+  final String? klassName;
+  final List<String> instructorNames;
+  final int memberCount;
+  final String sourceStatus;
+  final DateTime? fetchedAt;
+  final bool cacheHit;
+  final List<EcourseClassmate> students;
+
+  factory EcourseCourseRoster.fromJson(Map<String, dynamic> json) =>
+      EcourseCourseRoster(
+        rosterId: json["roster_id"] as String? ?? "",
+        ecourseCourseId: json["ecourse_course_id"] as String? ?? "",
+        courseCode: json["course_code"] as String?,
+        courseName: json["course_name"] as String? ?? "",
+        displayName: json["display_name"] as String?,
+        semesterId: json["semester_id"] as String? ?? "",
+        academicYearId: json["academic_year_id"] as String?,
+        departmentName: json["department_name"] as String?,
+        gradeName: json["grade_name"] as String?,
+        klassName: json["klass_name"] as String?,
+        instructorNames: ((json["instructor_names"] as List?) ?? const [])
+            .map((item) => item.toString())
+            .where((item) => item.isNotEmpty)
+            .toList(),
+        memberCount: (json["member_count"] as num? ?? 0).toInt(),
+        sourceStatus: json["source_status"] as String? ?? "available",
+        fetchedAt: DateTime.tryParse(json["fetched_at"] as String? ?? ""),
+        cacheHit: json["cache_hit"] as bool? ?? false,
+        students: ((json["students"] as List?) ?? const [])
+            .map((item) =>
+                EcourseClassmate.fromJson(item as Map<String, dynamic>))
+            .toList(),
+      );
+}
+
 // ── CourseBench models ────────────────────────────────────────────────────────
 
 const kCbDimLabels = ['课程质量', '作业用时', '考核难度', '给分情况'];
